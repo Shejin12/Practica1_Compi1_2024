@@ -8,8 +8,14 @@ import com.mycompany.practica_1.Reportes.Movimientos;
 import com.mycompany.practica_1.Analizadores.Lexer;
 import com.mycompany.practica_1.Analizadores.Parser;
 import com.mycompany.practica_1.Reportes.*;
+import com.mycompany.practica_1.Reportes.PosiblesFormas.Circulo;
+import com.mycompany.practica_1.Reportes.PosiblesFormas.Cuadrado;
+import com.mycompany.practica_1.Reportes.PosiblesFormas.Linea;
+import com.mycompany.practica_1.Reportes.PosiblesFormas.Rectangulo;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -34,9 +40,13 @@ public class Lectura extends javax.swing.JFrame {
      */
     Graficos graficos;
     private String rutaActual = "";
+    Graphics2D gd;
+    
+    public LinkedList<Formas> formas;
+    
     private LinkedList<Operadores> List_Operadores;
     private LinkedList<Errores> List_Errores;
-    private LinkedList<Figuras> List_Figuras;
+    public LinkedList<Figuras> List_Figuras;
     private LinkedList<Colores> List_Colores;
     private LinkedList<Movimientos> List_Movs;
     private LinkedList<String> listado_Colores = new LinkedList<String>();
@@ -47,12 +57,16 @@ public class Lectura extends javax.swing.JFrame {
     private ReporteError repError = new ReporteError();
     
     
+    
+    
+    
     public Lectura(Graficos graficos) {
         List_Colores = new LinkedList<Colores>();
         List_Errores = new LinkedList<Errores>();
         List_Figuras = new LinkedList<Figuras>();
         List_Operadores = new LinkedList<Operadores>();
         List_Movs = new LinkedList<Movimientos>();
+        formas = new LinkedList<Formas>();
         this.graficos = graficos;
         graficos.setLectura(this);
         reportes.setLocationRelativeTo(null);
@@ -98,6 +112,27 @@ public class Lectura extends javax.swing.JFrame {
                 listado_Movimientos.add(mv.getTipo());
             }
         }
+    }
+    
+    public void AgregarCirculo(int posx, int posy, int radio, Color col){
+        Circulo cir = new Circulo(radio, radio, graficos, radio, col);
+        formas.add(cir);
+    }
+    
+    public void AgregarCuadrado(int posx, int posy, int lado, Color col){
+        Cuadrado cuad = new Cuadrado(posx, posy, graficos, col, lado);
+        formas.add(cuad);
+    
+    }
+    
+    public void AgregarRectangulo(int posx, int posy, int ancho, int alto, Color col){
+        Rectangulo rec = new Rectangulo(posx, posy, graficos, col, alto, ancho);
+        formas.add(rec);
+    }
+    
+    public void AgregarLinea(int posx, int posy, int finx, int finy, Color col){
+        Linea line = new Linea(posx, posy, graficos, col, finx, finy);
+        formas.add(line);
     }
     
     private void reporteConsola(){
@@ -417,6 +452,10 @@ public class Lectura extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCompilarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompilarActionPerformed
+        //REiniciar los graficos
+        BufferedImage im = new BufferedImage(900, 900, BufferedImage.TYPE_INT_ARGB);
+        gd = im.createGraphics();
+        
         reiniciarListas();
         StringReader in = new StringReader(jTextArea1.getText());
         Lexer lexer = new Lexer(in);

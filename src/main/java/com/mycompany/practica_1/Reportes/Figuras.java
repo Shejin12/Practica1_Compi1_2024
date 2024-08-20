@@ -27,7 +27,7 @@ public class Figuras {
                 case "Cuadrado":
                     cantCuadrados++;
                     break;
-                case "Recatangulo":
+                case "Rectangulo":
                     cantRectangulos++;
                     break;
                 case "Linea":
@@ -45,11 +45,11 @@ public class Figuras {
                     return cantCirculos;
                 case "Cuadrado":
                     return cantCuadrados;
-                case "Recatangulo":
+                case "Rectangulo":
                     return cantRectangulos;
                 case "Linea":
                     return cantLineas;
-                case "Curva":
+                case "Poligono":
                     return cantPoligonos;
                 default:
                     return 0;

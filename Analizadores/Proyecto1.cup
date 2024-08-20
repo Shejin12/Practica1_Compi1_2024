@@ -4,6 +4,7 @@ import java_cup.runtime.*;
 import java.awt.Color;
 import com.mycompany.practica_1.Analizadores.Lexer;
 import com.mycompany.practica_1.Front.Graficos;
+import com.mycompany.practica_1.Reportes.*;
 
 parser code{:
     //Variables
@@ -110,21 +111,27 @@ entero ::= PAROPN entero:num PARCLS {:RESULT = (int)num; :};
 
 graficar ::= GRAFICAR CIRCULO PAROPN ID:id COMA entero:posx COMA entero:posy COMA entero:radio COMA color:col PARCLS
             {: graficos.graficarCirculo((int)posx, (int)posy, (int)radio, (Color)col); 
-                graficos.lectura.AgregarFigura("Circulo");:}
+                graficos.lectura.AgregarFigura("Circulo");  graficos.lectura.AgregarCirculo((int)posx, (int)posy, (int)radio, (Color)col);:}
           | GRAFICAR CUADRADO PAROPN ID:id COMA entero:posx COMA entero:posy COMA entero:tam COMA color:col PARCLS
             {: graficos.graficarCuadrado((int)posx, (int)posy, (int)tam, (Color)col);
-                graficos.lectura.AgregarFigura("Cuadrado");:}
+                graficos.lectura.AgregarFigura("Cuadrado"); graficos.lectura.AgregarCuadrado((int)posx, (int)posy, (int)tam, (Color)col);    :}
           | GRAFICAR RECTANGULO PAROPN ID:id COMA entero:posx COMA entero:posy COMA entero:ancho  COMA entero:alto COMA color:col PARCLS
             {: graficos.graficarRectangulo((int)posx, (int)posy, (int)ancho, (int)alto, (Color)col ); 
-                graficos.lectura.AgregarFigura("Rectangulo");:}
+                graficos.lectura.AgregarFigura("Rectangulo"); graficos.lectura.AgregarRectangulo((int)posx, (int)posy, (int)ancho, (int)alto, (Color)col); :}
           | GRAFICAR LINEA PAROPN ID:id COMA entero:x1 COMA entero:y1 COMA entero:x2 COMA entero:y2 COMA color:col PARCLS
             {: graficos.graficarLinea((int)x1, (int)y1, (int)x2, (int)y2, (Color)col); 
-                graficos.lectura.AgregarFigura("Linea");:}
+                graficos.lectura.AgregarFigura("Linea");    graficos.lectura.AgregarLinea((int)x1, (int)y1, (int)x2, (int)y2, (Color)col); :}
           | GRAFICAR POLIGONO PAROPN ID:id COMA entero:posx COMA entero:posy COMA entero:cant COMA entero:ancho COMA entero:alto COMA color:col PARCLS
             {: graficos.graficarPoligono((int) posx, (int)posy, (int)cant, (int)ancho, (int)alto, (Color)col); 
                 graficos.lectura.AgregarFigura("Poligono");:};
 
-animar ::= ANIMAR OBJETO ANTERIOR PAROPN LINEA COMA entero COMA entero COMA entero PARCLS {: graficos.lectura.AgregarMovimiento("Lineal"); :}
+animar ::= ANIMAR OBJETO ANTERIOR PAROPN LINEA COMA entero:nuevoX COMA entero:nuevoY COMA entero:orden PARCLS {: graficos.lectura.AgregarMovimiento("Lineal"); 
+                    Figuras fig = graficos.lectura.List_Figuras.getLast(); 
+                    if(fig.getNombre() == "Circulo" ){ graficos.lectura.formas.getLast().Animar("linea", (int)nuevoX, (int)nuevoY, (int)orden); } 
+                    if(fig.getNombre() == "Cuadrado" ){ graficos.lectura.formas.getLast().Animar("linea", (int)nuevoX, (int)nuevoY, (int)orden); }
+                    if(fig.getNombre() == "Rectangulo" ){ graficos.lectura.formas.getLast().Animar("linea", (int)nuevoX, (int)nuevoY, (int)orden); }
+                    if(fig.getNombre() == "Linea" ){  }
+                    :}
         |  ANIMAR OBJETO ANTERIOR PAROPN CURVA COMA entero COMA entero COMA entero PARCLS {: graficos.lectura.AgregarMovimiento("Curva"); :};
 
 

@@ -6,6 +6,18 @@ package com.mycompany.practica_1.Front;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 /**
  *
@@ -18,9 +30,13 @@ public class Graficos extends javax.swing.JFrame {
      */
     
     public Lectura lectura;
+    private Graphics2D gd; 
+    private BufferedImage im;
     
     public Graficos() {
         initComponents();
+        im = new BufferedImage(900, 900, BufferedImage.TYPE_INT_ARGB);
+        gd = im.createGraphics();
     }
 
     public void setLectura(Lectura lectura){
@@ -39,30 +55,41 @@ public class Graficos extends javax.swing.JFrame {
     public void repintar(){
         Graphics g = jPanelFiguras.getGraphics();
         jPanelFiguras.paint(g);
+        im = new BufferedImage(900, 900, BufferedImage.TYPE_INT_ARGB);
+        gd = im.createGraphics();
     }
     
     public void graficarCirculo(int posx,int posy, int radio, Color color){
         Graphics g = jPanelFiguras.getGraphics();
         g.setColor(color);
         g.fillOval(posx, posy, radio*2, radio*2);
+        gd.setColor(color);
+        gd.fillOval(posx, posy, radio*2, radio*2);
     }
     
     public void graficarCuadrado(int posx,  int posy, int tamlado, Color color){
         Graphics g = jPanelFiguras.getGraphics();
         g.setColor(color);
         g.fillRect(posx, posy, tamlado, tamlado);
+        gd.setColor(color);
+        gd.fillRect(posx, posy, tamlado, tamlado);
     }
     
     public void graficarRectangulo(int posx, int posy, int ancho, int alto, Color color){
         Graphics g = jPanelFiguras.getGraphics();
         g.setColor(color);
         g.fillRect(posx, posy, ancho, alto);
+        gd.setColor(color);
+        gd.fillRect(posx, posy, ancho, alto);
     }
     
     public void graficarLinea(int x1, int y1,  int x2, int y2, Color color){
         Graphics g = jPanelFiguras.getGraphics();
         g.setColor(color);
         g.drawLine(x1, y1, x2, y2);
+        gd.setColor(color);
+        gd.drawLine(x1, y1, x2, y2);
+        
     }
     
     public void graficarPoligono(int posx, int posy, int cantlados, int alto, int ancho, Color color){
@@ -77,6 +104,37 @@ public class Graficos extends javax.swing.JFrame {
         Graphics g = jPanelFiguras.getGraphics();
         g.setColor(color);
         g.fillPolygon(ladosX, ladosY, cantlados);
+        gd.setColor(color);
+        gd.fillPolygon(ladosX, ladosY, cantlados);
+    }
+    
+    private String path(){
+    String folderPath = "";
+        JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getFileSystemView().getHomeDirectory());
+        
+        // Configurar para seleccionar solo directorios
+        fileChooser.setDialogTitle("Selecciona una carpeta");
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        
+        // Deshabilitar la opción "Todos los archivos"
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        
+        // Mostrar el diálogo para seleccionar carpeta
+        int returnValue = fileChooser.showOpenDialog(null);
+        
+        // Comprobar si se seleccionó una carpeta
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFolder = fileChooser.getSelectedFile();
+            
+            folderPath = selectedFolder.getAbsolutePath();
+            
+            // Mostrar la ruta seleccionada
+            System.out.println("Carpeta seleccionada: " + folderPath);
+            return folderPath;
+        } else {
+            System.out.println("No se seleccionó ninguna carpeta.");
+            return "";
+        }
     }
     
     /**
@@ -91,6 +149,8 @@ public class Graficos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanelFiguras = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        expPng = new javax.swing.JButton();
+        expPdf = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Graficos");
@@ -115,18 +175,37 @@ public class Graficos extends javax.swing.JFrame {
             }
         });
 
+        expPng.setText("Exportar PNG");
+        expPng.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                expPngActionPerformed(evt);
+            }
+        });
+
+        expPdf.setText("Exportar PDF");
+        expPdf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                expPdfActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(expPng)
+                        .addGap(18, 18, 18)
+                        .addComponent(expPdf)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(262, 262, 262)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,7 +213,10 @@ public class Graficos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 575, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(expPng)
+                    .addComponent(expPdf))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
@@ -146,11 +228,52 @@ public class Graficos extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void expPngActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expPngActionPerformed
+        // TODO add your handling code here:
+        String folderPath = path();
+        
+        String rutaImagen = folderPath + "\\Formas.png"; 
+        try {
+            ImageIO.write(im, "png", new File(rutaImagen));
+            System.out.println("El panel se ha exportado a " + rutaImagen);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_expPngActionPerformed
+
+    private void expPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expPdfActionPerformed
+        // TODO add your handling code here:
+        String pth = path();
+
+try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
+
+
+            // Convertir BufferedImage a PDImageXObject
+            PDImageXObject pdImage = LosslessFactory.createFromImage(document, im);
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+            //contentStream.drawImage(pdImage, 20, 20);
+            contentStream.drawImage(pdImage, 20, 20, 900, 900);
+            contentStream.close();
+
+            document.save(pth + "\\Formas.pdf");
+            System.out.println("PDF creado en: " +pth + "\\Formas.pdf" );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        
+    
+    }//GEN-LAST:event_expPdfActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton expPdf;
+    private javax.swing.JButton expPng;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanelFiguras;
     private javax.swing.JScrollPane jScrollPane1;

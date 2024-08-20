@@ -9,6 +9,7 @@ import java_cup.runtime.*;
 import java.awt.Color;
 import com.mycompany.practica_1.Analizadores.Lexer;
 import com.mycompany.practica_1.Front.Graficos;
+import com.mycompany.practica_1.Reportes.*;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -481,7 +482,7 @@ class CUP$Parser$actions {
 		int colright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		Object col = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		 graficos.graficarCirculo((int)posx, (int)posy, (int)radio, (Color)col); 
-                graficos.lectura.AgregarFigura("Circulo");
+                graficos.lectura.AgregarFigura("Circulo");  graficos.lectura.AgregarCirculo((int)posx, (int)posy, (int)radio, (Color)col);
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("graficar",1, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-12)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -506,7 +507,7 @@ class CUP$Parser$actions {
 		int colright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		Object col = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		 graficos.graficarCuadrado((int)posx, (int)posy, (int)tam, (Color)col);
-                graficos.lectura.AgregarFigura("Cuadrado");
+                graficos.lectura.AgregarFigura("Cuadrado"); graficos.lectura.AgregarCuadrado((int)posx, (int)posy, (int)tam, (Color)col);    
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("graficar",1, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-12)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -534,7 +535,7 @@ class CUP$Parser$actions {
 		int colright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		Object col = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		 graficos.graficarRectangulo((int)posx, (int)posy, (int)ancho, (int)alto, (Color)col ); 
-                graficos.lectura.AgregarFigura("Rectangulo");
+                graficos.lectura.AgregarFigura("Rectangulo"); graficos.lectura.AgregarRectangulo((int)posx, (int)posy, (int)ancho, (int)alto, (Color)col); 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("graficar",1, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-14)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -562,7 +563,7 @@ class CUP$Parser$actions {
 		int colright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		Object col = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		 graficos.graficarLinea((int)x1, (int)y1, (int)x2, (int)y2, (Color)col); 
-                graficos.lectura.AgregarFigura("Linea");
+                graficos.lectura.AgregarFigura("Linea");    graficos.lectura.AgregarLinea((int)x1, (int)y1, (int)x2, (int)y2, (Color)col); 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("graficar",1, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-14)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -602,7 +603,22 @@ class CUP$Parser$actions {
           case 17: // animar ::= ANIMAR OBJETO ANTERIOR PAROPN LINEA COMA entero COMA entero COMA entero PARCLS 
             {
               Object RESULT =null;
+		int nuevoXleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-5)).left;
+		int nuevoXright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-5)).right;
+		Object nuevoX = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-5)).value;
+		int nuevoYleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)).left;
+		int nuevoYright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)).right;
+		Object nuevoY = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-3)).value;
+		int ordenleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int ordenright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Object orden = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		 graficos.lectura.AgregarMovimiento("Lineal"); 
+                    Figuras fig = graficos.lectura.List_Figuras.getLast(); 
+                    if(fig.getNombre() == "Circulo" ){ graficos.lectura.formas.getLast().Animar("linea", (int)nuevoX, (int)nuevoY, (int)orden); } 
+                    if(fig.getNombre() == "Cuadrado" ){ graficos.lectura.formas.getLast().Animar("linea", (int)nuevoX, (int)nuevoY, (int)orden); }
+                    if(fig.getNombre() == "Rectangulo" ){ graficos.lectura.formas.getLast().Animar("linea", (int)nuevoX, (int)nuevoY, (int)orden); }
+                    if(fig.getNombre() == "Linea" ){  }
+                    
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("animar",3, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-11)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
