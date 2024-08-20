@@ -17,7 +17,15 @@ parser code{:
         //Inicializar mas objetos
     }
 
+public void syntax_error(Symbol cur_token) {
+        System.out.println("Simbolo con error:" + symbl_name_from_id(cur_token.sym));
+        System.out.println("Linea " + cur_token.left);
+        System.out.println("Columna " + cur_token.right);
+        
+        graficos.lectura.AgregarErrores(symbl_name_from_id(cur_token.sym), cur_token.left, cur_token.right);
 
+
+    }
 
 :}
 
@@ -40,6 +48,7 @@ start with instruccion;
 instruccion ::= graficar instruccion
                 | animar instruccion
                 |/**/;
+
 
 color ::= COLOR:color {:
     Color col = Color.black; 
@@ -72,6 +81,7 @@ color ::= COLOR:color {:
             col =  Color.GREEN;
             break; 
     }
+    graficos.lectura.AgregarColor((String)color);
     RESULT = col; 
 :};
 
@@ -79,23 +89,40 @@ color ::= COLOR:color {:
 
 entero ::= FLOTANTES:numero {: RESULT = (int)Math.round((double)numero); :};
 entero ::= NUMEROS:numero  {: RESULT = numero; :};
-entero ::= entero:num1 SUMA entero:num2 {: RESULT = (int)num1 + (int)num2; :} 
-        |  entero:num1 RESTA entero:num2 {: RESULT = (int)num1 - (int)num2; :};
-entero ::= entero:num1 MULTI entero:num2 {: RESULT = (int)num1 * (int)num2;:}
-        | entero:num1 DIVISN entero:num2 {: RESULT = (int)num1 / (int)num2;:};
+entero ::= entero:num1 SUMA entero:num2 {: 
+                                        String cadena = ""; cadena +=(int)num1; cadena += "+"; cadena += (int)num2;
+                                        graficos.lectura.AgregarOperador(cadena, "suma", cur_token.left, cur_token.right); 
+                                        RESULT = (int)num1 + (int)num2;  :} 
+        |  entero:num1 RESTA entero:num2 {: 
+                                        String cadena = ""; cadena +=(int)num1; cadena += "-"; cadena += (int)num2;
+                                        graficos.lectura.AgregarOperador(cadena, "resta", cur_token.left, cur_token.right); 
+                                        RESULT = (int)num1 - (int)num2; :};
+entero ::= entero:num1 MULTI entero:num2 {: 
+                                        String cadena = ""; cadena +=(int)num1; cadena += "*"; cadena += (int)num2;
+                                        graficos.lectura.AgregarOperador(cadena, "multiplicacion", cur_token.left, cur_token.right); 
+                                        RESULT = (int)num1 * (int)num2;:}
+        | entero:num1 DIVISN entero:num2 {: 
+                                        String cadena = ""; cadena +=(int)num1; cadena += "/"; cadena += (int)num2;
+                                        graficos.lectura.AgregarOperador(cadena, "division", cur_token.left, cur_token.right); 
+                                        RESULT = (int)num1 / (int)num2;:};
 entero ::= PAROPN entero:num PARCLS {:RESULT = (int)num; :};
 
 
 graficar ::= GRAFICAR CIRCULO PAROPN ID:id COMA entero:posx COMA entero:posy COMA entero:radio COMA color:col PARCLS
-            {: graficos.graficarCirculo((int)posx, (int)posy, (int)radio, (Color)col); :}
+            {: graficos.graficarCirculo((int)posx, (int)posy, (int)radio, (Color)col); 
+                graficos.lectura.AgregarFigura("Circulo");:}
           | GRAFICAR CUADRADO PAROPN ID:id COMA entero:posx COMA entero:posy COMA entero:tam COMA color:col PARCLS
-            {: graficos.graficarCuadrado((int)posx, (int)posy, (int)tam, (Color)col);:}
+            {: graficos.graficarCuadrado((int)posx, (int)posy, (int)tam, (Color)col);
+                graficos.lectura.AgregarFigura("Cuadrado");:}
           | GRAFICAR RECTANGULO PAROPN ID:id COMA entero:posx COMA entero:posy COMA entero:ancho  COMA entero:alto COMA color:col PARCLS
-            {: graficos.graficarRectangulo((int)posx, (int)posy, (int)ancho, (int)alto, (Color)col ); :}
+            {: graficos.graficarRectangulo((int)posx, (int)posy, (int)ancho, (int)alto, (Color)col ); 
+                graficos.lectura.AgregarFigura("Rectangulo");:}
           | GRAFICAR LINEA PAROPN ID:id COMA entero:x1 COMA entero:y1 COMA entero:x2 COMA entero:y2 COMA color:col PARCLS
-            {: graficos.graficarLinea((int)x1, (int)y1, (int)x2, (int)y2, (Color)col); :}
+            {: graficos.graficarLinea((int)x1, (int)y1, (int)x2, (int)y2, (Color)col); 
+                graficos.lectura.AgregarFigura("Linea");:}
           | GRAFICAR POLIGONO PAROPN ID:id COMA entero:posx COMA entero:posy COMA entero:cant COMA entero:ancho COMA entero:alto COMA color:col PARCLS
-            {: graficos.graficarPoligono((int) posx, (int)posy, (int)cant, (int)ancho, (int)alto, (Color)col); :};
+            {: graficos.graficarPoligono((int) posx, (int)posy, (int)cant, (int)ancho, (int)alto, (Color)col); 
+                graficos.lectura.AgregarFigura("Poligono");:};
 
 animar ::= ANIMAR OBJETO ANTERIOR PAROPN LINEA COMA entero COMA entero COMA entero PARCLS
         |  ANIMAR OBJETO ANTERIOR PAROPN CURVA COMA entero COMA entero COMA entero PARCLS;

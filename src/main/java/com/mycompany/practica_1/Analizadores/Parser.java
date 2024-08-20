@@ -231,7 +231,15 @@ public class Parser extends java_cup.runtime.lr_parser {
         //Inicializar mas objetos
     }
 
+public void syntax_error(Symbol cur_token) {
+        System.out.println("Simbolo con error:" + symbl_name_from_id(cur_token.sym));
+        System.out.println("Linea " + cur_token.left);
+        System.out.println("Columna " + cur_token.right);
+        
+        graficos.lectura.AgregarErrores(symbl_name_from_id(cur_token.sym), cur_token.left, cur_token.right);
 
+
+    }
 
 
 
@@ -338,6 +346,7 @@ class CUP$Parser$actions {
             col =  Color.GREEN;
             break; 
     }
+    graficos.lectura.AgregarColor((String)color);
     RESULT = col; 
 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("color",2, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -378,7 +387,10 @@ class CUP$Parser$actions {
 		int num2left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int num2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object num2 = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 RESULT = (int)num1 + (int)num2; 
+		 
+                                        String cadena = ""; cadena +=(int)num1; cadena += "+"; cadena += (int)num2;
+                                        graficos.lectura.AgregarOperador(cadena, "suma", cur_token.left, cur_token.right); 
+                                        RESULT = (int)num1 + (int)num2;  
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("entero",0, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -393,7 +405,10 @@ class CUP$Parser$actions {
 		int num2left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int num2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object num2 = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 RESULT = (int)num1 - (int)num2; 
+		 
+                                        String cadena = ""; cadena +=(int)num1; cadena += "-"; cadena += (int)num2;
+                                        graficos.lectura.AgregarOperador(cadena, "resta", cur_token.left, cur_token.right); 
+                                        RESULT = (int)num1 - (int)num2; 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("entero",0, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -408,7 +423,10 @@ class CUP$Parser$actions {
 		int num2left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int num2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object num2 = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 RESULT = (int)num1 * (int)num2;
+		 
+                                        String cadena = ""; cadena +=(int)num1; cadena += "*"; cadena += (int)num2;
+                                        graficos.lectura.AgregarOperador(cadena, "multiplicacion", cur_token.left, cur_token.right); 
+                                        RESULT = (int)num1 * (int)num2;
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("entero",0, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -423,7 +441,10 @@ class CUP$Parser$actions {
 		int num2left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int num2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object num2 = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 RESULT = (int)num1 / (int)num2;
+		 
+                                        String cadena = ""; cadena +=(int)num1; cadena += "/"; cadena += (int)num2;
+                                        graficos.lectura.AgregarOperador(cadena, "division", cur_token.left, cur_token.right); 
+                                        RESULT = (int)num1 / (int)num2;
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("entero",0, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -460,6 +481,7 @@ class CUP$Parser$actions {
 		int colright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		Object col = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		 graficos.graficarCirculo((int)posx, (int)posy, (int)radio, (Color)col); 
+                graficos.lectura.AgregarFigura("Circulo");
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("graficar",1, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-12)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -484,6 +506,7 @@ class CUP$Parser$actions {
 		int colright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		Object col = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		 graficos.graficarCuadrado((int)posx, (int)posy, (int)tam, (Color)col);
+                graficos.lectura.AgregarFigura("Cuadrado");
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("graficar",1, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-12)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -511,6 +534,7 @@ class CUP$Parser$actions {
 		int colright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		Object col = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		 graficos.graficarRectangulo((int)posx, (int)posy, (int)ancho, (int)alto, (Color)col ); 
+                graficos.lectura.AgregarFigura("Rectangulo");
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("graficar",1, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-14)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -538,6 +562,7 @@ class CUP$Parser$actions {
 		int colright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		Object col = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		 graficos.graficarLinea((int)x1, (int)y1, (int)x2, (int)y2, (Color)col); 
+                graficos.lectura.AgregarFigura("Linea");
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("graficar",1, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-14)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -567,7 +592,8 @@ class CUP$Parser$actions {
 		int colleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
 		int colright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		Object col = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
-
+		 graficos.graficarPoligono((int) posx, (int)posy, (int)cant, (int)ancho, (int)alto, (Color)col); 
+                graficos.lectura.AgregarFigura("Poligono");
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("graficar",1, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-16)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;

@@ -13,4 +13,21 @@ public class Operadores {
     }
     
     
+    
+    public String operacion(){
+        return texto;
+    }
+    
+    public int fila(){
+        return fila;
+    }
+    
+    public int colum(){
+        return columna;
+    }
+    
+    public String tipo(){
+        return tipo;
+    }
+    
 }

@@ -17,7 +17,7 @@ public class Graficos extends javax.swing.JFrame {
      * Creates new form Graficos
      */
     
-    private Lectura lectura;
+    public Lectura lectura;
     
     public Graficos() {
         initComponents();
@@ -76,7 +76,7 @@ public class Graficos extends javax.swing.JFrame {
         
         Graphics g = jPanelFiguras.getGraphics();
         g.setColor(color);
-        g.drawPolygon(ladosX, ladosY, cantlados);
+        g.fillPolygon(ladosX, ladosY, cantlados);
     }
     
     /**

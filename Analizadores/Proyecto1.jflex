@@ -123,5 +123,7 @@ Espacio = \s*(\r\n|\r|\n)
     {Coma} {return newSymbol(sym.COMA); }
 
     {nombre} {return newSymbol(sym.ID);}
-    {Espacio} {System.out.println("espacio"); }
+    {Espacio} {}
+
+    .       {}
 
