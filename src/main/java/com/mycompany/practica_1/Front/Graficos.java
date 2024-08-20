@@ -93,6 +93,7 @@ public class Graficos extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Graficos");
 
         javax.swing.GroupLayout jPanelFigurasLayout = new javax.swing.GroupLayout(jPanelFiguras);
         jPanelFiguras.setLayout(jPanelFigurasLayout);

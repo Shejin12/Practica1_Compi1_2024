@@ -4,6 +4,7 @@
  */
 package com.mycompany.practica_1.Front;
 
+import com.mycompany.practica_1.Reportes.Movimientos;
 import com.mycompany.practica_1.Analizadores.Lexer;
 import com.mycompany.practica_1.Analizadores.Parser;
 import com.mycompany.practica_1.Reportes.*;
@@ -20,6 +21,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -175,6 +177,7 @@ public class Lectura extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Codigo de Entrada");
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -373,6 +376,7 @@ public class Lectura extends javax.swing.JFrame {
             reporteConsola();
         } catch (Exception ex) {
             Logger.getLogger(Lectura.class.getName()).log(Level.SEVERE, null, ex);
+            btnGraficas.setEnabled(false);
         }
         
     }//GEN-LAST:event_btnGraficasActionPerformed
@@ -394,6 +398,7 @@ public class Lectura extends javax.swing.JFrame {
             }
         } else {
             System.out.println("No se seleccionó ningún archivo.");
+            
         }
     }//GEN-LAST:event_btnCargarActionPerformed
 
@@ -423,6 +428,8 @@ public class Lectura extends javax.swing.JFrame {
             btnGraficas.setEnabled(true);
         } catch (Exception ex) {
             Logger.getLogger(Lectura.class.getName()).log(Level.SEVERE, null, ex);
+            btnGraficas.setEnabled(false);
+            JOptionPane.showMessageDialog(null, "Ups, ocurrió un error al compilar, ve al reporte de errores para más información");
         }
     }//GEN-LAST:event_btnCompilarActionPerformed
 

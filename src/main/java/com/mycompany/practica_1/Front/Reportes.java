@@ -4,6 +4,7 @@
  */
 package com.mycompany.practica_1.Front;
 
+import com.mycompany.practica_1.Reportes.Movimientos;
 import com.mycompany.practica_1.Reportes.Colores;
 import com.mycompany.practica_1.Reportes.Errores;
 import com.mycompany.practica_1.Reportes.Figuras;
@@ -47,6 +48,7 @@ public class Reportes extends javax.swing.JFrame {
         tblAnimaciones = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Reportes de Datos");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 Salida(evt);
