@@ -254,7 +254,7 @@ try (PDDocument document = new PDDocument()) {
             PDImageXObject pdImage = LosslessFactory.createFromImage(document, im);
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
             //contentStream.drawImage(pdImage, 20, 20);
-            contentStream.drawImage(pdImage, 20, 20, 900, 900);
+            contentStream.drawImage(pdImage, 0, 0, 900, 900);
             contentStream.close();
 
             document.save(pth + "\\Formas.pdf");
