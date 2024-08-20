@@ -36,9 +36,13 @@ public class Lectura extends javax.swing.JFrame {
     private LinkedList<Errores> List_Errores;
     private LinkedList<Figuras> List_Figuras;
     private LinkedList<Colores> List_Colores;
+    private LinkedList<Movimientos> List_Movs;
     private LinkedList<String> listado_Colores = new LinkedList<String>();
     private LinkedList<String> listado_Figuras = new LinkedList<String>();
     private LinkedList<String> listado_Errores = new LinkedList<String>();
+    private LinkedList<String> listado_Movimientos = new LinkedList<String>();
+    private Reportes reportes = new Reportes();
+    private ReporteError repError = new ReporteError();
     
     
     public Lectura(Graficos graficos) {
@@ -46,8 +50,11 @@ public class Lectura extends javax.swing.JFrame {
         List_Errores = new LinkedList<Errores>();
         List_Figuras = new LinkedList<Figuras>();
         List_Operadores = new LinkedList<Operadores>();
+        List_Movs = new LinkedList<Movimientos>();
         this.graficos = graficos;
         graficos.setLectura(this);
+        reportes.setLocationRelativeTo(null);
+        repError.setLocationRelativeTo(null);
         initComponents();
     }
     
@@ -60,8 +67,8 @@ public class Lectura extends javax.swing.JFrame {
         Figuras fig = new Figuras(tipo);
         List_Figuras.add(fig);
         for (Figuras fg : List_Figuras) {
-            if(!listado_Colores.contains(fg.getNombre())){
-                listado_Colores.add(fg.getNombre());
+            if(!listado_Figuras.contains(fg.getNombre())){
+                listado_Figuras.add(fg.getNombre());
             }
         }
     }
@@ -79,6 +86,16 @@ public class Lectura extends javax.swing.JFrame {
     public void AgregarErrores(String tipo, int fila, int columna){
         Errores err = new Errores(tipo, fila, columna);
         List_Errores.add(err);
+    }
+    
+    public void AgregarMovimiento(String tipo){
+        Movimientos mov = new Movimientos(tipo);
+        List_Movs.add(mov);
+        for (Movimientos mv : List_Movs) {
+            if(!listado_Movimientos.contains(mv.getTipo())){
+                listado_Movimientos.add(mv.getTipo());
+            }
+        }
     }
     
     private void reporteConsola(){
@@ -102,6 +119,11 @@ public class Lectura extends javax.swing.JFrame {
         for (String listo : listos) {
             System.out.println(listo + " tiene una cantidad de " + Figuras.getCant(listo));
         }
+        
+        System.out.println("\n\nMovimientos");
+        for (String listado_Movimiento : listado_Movimientos) {
+            System.out.println(listado_Movimiento + " con ocurrencia de: " + Movimientos.getCant(listado_Movimiento));
+        }
     }
     
     private void reiniciarListas(){
@@ -109,11 +131,14 @@ public class Lectura extends javax.swing.JFrame {
         List_Errores.clear();
         List_Figuras.clear();
         List_Operadores.clear();
+        List_Movs.clear();
         Figuras.limpiarContdores();
         Colores.limpiarContadores();
+        Movimientos.reiniciarContadores();
         listado_Colores.clear();
         listado_Errores.clear();
         listado_Figuras.clear();
+        listado_Movimientos.clear();
     }
     
     
@@ -274,14 +299,14 @@ public class Lectura extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton5)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -309,21 +334,16 @@ public class Lectura extends javax.swing.JFrame {
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton5)))
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnCompilar)
-                                .addComponent(btnCargar))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnGraficas)
-                                .addComponent(btnGuardar)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                        .addComponent(jButton3)
-                        .addGap(29, 29, 29))))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnCompilar)
+                        .addComponent(btnCargar))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnGraficas)
+                        .addComponent(btnGuardar)
+                        .addComponent(jButton3)))
+                .addGap(31, 31, 31))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -407,7 +427,13 @@ public class Lectura extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCompilarActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        
+        if (List_Errores.isEmpty()) {
+            reportes.setVisible(true);
+            reportes.AgregarDatos(List_Operadores, listado_Figuras, listado_Movimientos, listado_Colores);
+        } else {
+            repError.setVisible(true);
+            repError.AgregarErrores(List_Errores);
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**

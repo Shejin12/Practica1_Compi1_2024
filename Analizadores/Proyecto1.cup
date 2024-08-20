@@ -124,7 +124,7 @@ graficar ::= GRAFICAR CIRCULO PAROPN ID:id COMA entero:posx COMA entero:posy COM
             {: graficos.graficarPoligono((int) posx, (int)posy, (int)cant, (int)ancho, (int)alto, (Color)col); 
                 graficos.lectura.AgregarFigura("Poligono");:};
 
-animar ::= ANIMAR OBJETO ANTERIOR PAROPN LINEA COMA entero COMA entero COMA entero PARCLS
-        |  ANIMAR OBJETO ANTERIOR PAROPN CURVA COMA entero COMA entero COMA entero PARCLS;
+animar ::= ANIMAR OBJETO ANTERIOR PAROPN LINEA COMA entero COMA entero COMA entero PARCLS {: graficos.lectura.AgregarMovimiento("Lineal"); :}
+        |  ANIMAR OBJETO ANTERIOR PAROPN CURVA COMA entero COMA entero COMA entero PARCLS {: graficos.lectura.AgregarMovimiento("Curva"); :};
 
 

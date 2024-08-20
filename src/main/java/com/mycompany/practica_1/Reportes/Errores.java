@@ -9,8 +9,7 @@ package com.mycompany.practica_1.Reportes;
  * @author cheji
  */
 public class Errores {
-        private String texto;
-    private String tipo;
+    private String texto;
     private int fila, columna;
 
     public Errores(String texto, int fila, int columna) {
@@ -18,6 +17,20 @@ public class Errores {
         this.fila = fila;
         this.columna = columna;
     }
+    
+    public String getError(){
+        return texto;
+    }
+
+    public int getColumna() {
+        return columna;
+    }
+
+    public int getFila() {
+        return fila;
+    }
+    
+    
     
     
 }

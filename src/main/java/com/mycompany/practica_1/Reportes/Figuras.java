@@ -12,9 +12,7 @@ public class Figuras {
                 cantCuadrados = 0,
                 cantRectangulos = 0,
                 cantCirculos = 0,
-                cantPoligonos = 0,
-                cantMovCurva = 0,
-                cantMovLinea = 0;
+                cantPoligonos = 0;
     
         public Figuras(String tipo) {
         this.tipo = tipo;
@@ -35,12 +33,6 @@ public class Figuras {
                 case "Linea":
                     cantLineas++;
                     break;
-                case "Curva":
-                    cantMovCurva++;
-                    break;
-                case "Lineal":
-                    cantMovLinea++;
-                    break;
                 case "Poligono":
                     cantPoligonos++;
                     break;
@@ -58,10 +50,6 @@ public class Figuras {
                 case "Linea":
                     return cantLineas;
                 case "Curva":
-                    return cantMovCurva;
-                case "Lineal":
-                    return cantMovLinea;
-                case "Poligono":
                     return cantPoligonos;
                 default:
                     return 0;
@@ -78,7 +66,5 @@ public class Figuras {
                 cantRectangulos = 0;
                 cantCirculos = 0;
                 cantPoligonos = 0;
-                cantMovCurva = 0;
-                cantMovLinea = 0;
         }
 }

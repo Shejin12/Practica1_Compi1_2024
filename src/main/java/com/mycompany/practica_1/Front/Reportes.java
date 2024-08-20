@@ -46,7 +46,12 @@ public class Reportes extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         tblAnimaciones = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                Salida(evt);
+            }
+        });
 
         tblOperaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -135,7 +140,7 @@ public class Reportes extends javax.swing.JFrame {
             tblFiguras.getColumnModel().getColumn(1).setHeaderValue("Linea");
         }
 
-        jLabel4.setText("COLORES USADOS");
+        jLabel4.setText("MOVIMIENTOS USADOS");
 
         tblAnimaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -211,7 +216,11 @@ public class Reportes extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void AgregarDatos(LinkedList<Operadores> op, LinkedList<String> fig, LinkedList<String> err, LinkedList<String> clrs){
+    private void Salida(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Salida
+        this.setVisible(false);
+    }//GEN-LAST:event_Salida
+
+    public void AgregarDatos(LinkedList<Operadores> op, LinkedList<String> fig, LinkedList<String> movi, LinkedList<String> clrs){
         DefaultTableModel modelo = (DefaultTableModel) tblOperaciones.getModel();
         int filas = op.size();
         modelo.setRowCount(filas);
@@ -222,20 +231,28 @@ public class Reportes extends javax.swing.JFrame {
             modelo.setValueAt(op.get(i).operacion(), i, 3);
         }
         
-        modelo = (DefaultTableModel) tblColores.getModel();
+        DefaultTableModel modelo1 = (DefaultTableModel) tblColores.getModel();
         filas = clrs.size();
-        modelo.setRowCount(filas);
+        modelo1.setRowCount(filas);
         for (int i = 0; i < filas; i++) {
-            modelo.setValueAt(clrs.get(i), i, 0);
-            modelo.setValueAt(Colores.getCant(clrs.get(i)), i, 1);
+            modelo1.setValueAt(clrs.get(i), i, 0);
+            modelo1.setValueAt(Colores.getCant(clrs.get(i)), i, 1);
         }
         
-        modelo = (DefaultTableModel) tblFiguras.getModel();
+        DefaultTableModel modelo2 = (DefaultTableModel) tblFiguras.getModel();
         filas = fig.size();
-        modelo.setRowCount(filas);
+        modelo2.setRowCount(filas);
         for (int i = 0; i < filas; i++) {
-            modelo.setValueAt(fig.get(i), i, 0);
-            modelo.setValueAt(Figuras.getCant(fig.get(i)), i, 1);
+            modelo2.setValueAt(fig.get(i), i, 0);
+            modelo2.setValueAt(Figuras.getCant(fig.get(i)), i, 1);
+        }
+        
+        DefaultTableModel modelo3 = (DefaultTableModel) tblAnimaciones.getModel();
+        filas = movi.size();
+        modelo3.setRowCount(filas);
+        for (int i = 0; i < filas; i++) {
+            modelo3.setValueAt(movi.get(i), i, 0);
+            modelo3.setValueAt(Movimientos.getCant(movi.get(i)), i, 1);
         }
         
     }

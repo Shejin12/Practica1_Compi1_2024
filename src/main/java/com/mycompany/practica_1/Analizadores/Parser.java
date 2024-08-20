@@ -602,7 +602,7 @@ class CUP$Parser$actions {
           case 17: // animar ::= ANIMAR OBJETO ANTERIOR PAROPN LINEA COMA entero COMA entero COMA entero PARCLS 
             {
               Object RESULT =null;
-
+		 graficos.lectura.AgregarMovimiento("Lineal"); 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("animar",3, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-11)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -611,7 +611,7 @@ class CUP$Parser$actions {
           case 18: // animar ::= ANIMAR OBJETO ANTERIOR PAROPN CURVA COMA entero COMA entero COMA entero PARCLS 
             {
               Object RESULT =null;
-
+		 graficos.lectura.AgregarMovimiento("Curva"); 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("animar",3, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-11)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
