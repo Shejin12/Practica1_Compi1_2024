@@ -1,0 +1,103 @@
+package com.mycompany.practica_1.Analizadores;
+
+import java_cup.runtime.*;
+import java.awt.Color;
+import com.mycompany.practica_1.Analizadores.Lexer;
+import com.mycompany.practica_1.Front.Graficos;
+
+parser code{:
+    //Variables
+    //Objetos
+    //Constructores
+
+    private Graficos graficos; 
+    public Parser(Lexer lexer, Graficos graficos /*mas cosas*/){
+        super(lexer);
+        this.graficos = graficos;
+        //Inicializar mas objetos
+    }
+
+
+
+:}
+
+// DECLARACIONES
+//Terminales
+terminal NUMEROS, FLOTANTES, COLOR; 
+terminal SUMA, RESTA, MULTI, DIVISN;
+terminal CIRCULO, CUADRADO, RECTANGULO, POLIGONO, CURVA, LINEA;
+terminal GRAFICAR, ANIMAR, OBJETO, ANTERIOR;
+terminal PAROPN, PARCLS, COMA;
+terminal ID;
+//No terminales
+non terminal entero, graficar, color, animar, instruccion; //AWT solo trabaja con enteros
+
+precedence left SUMA, RESTA, MULTI, DIVISN;
+
+
+//PRODUCCIONES
+start with instruccion;
+instruccion ::= graficar instruccion
+                | animar instruccion
+                |/**/;
+
+color ::= COLOR:color {:
+    Color col = Color.black; 
+    switch((String)color){
+        case "amarillo":
+            col =  Color.YELLOW;
+            break; 
+        case "azul":
+            col =  Color.BLUE;
+            break; 
+        case "celeste":
+            col = Color.CYAN;
+            break; 
+        case "morado":
+            col =  new Color(124,51,255);
+            break; 
+        case "naranja":
+            col =  Color.ORANGE;
+            break; 
+        case "rojo":
+            col =  Color.RED;
+            break; 
+        case "rosado":
+            col =  Color.PINK;
+            break; 
+        case "turquesa":
+            col =  new Color(88,215,234);
+            break; 
+        case "verde":
+            col =  Color.GREEN;
+            break; 
+    }
+    RESULT = col; 
+:};
+
+
+
+entero ::= FLOTANTES:numero {: RESULT = (int)Math.round((double)numero); :};
+entero ::= NUMEROS:numero  {: RESULT = numero; :};
+entero ::= entero:num1 SUMA entero:num2 {: RESULT = (int)num1 + (int)num2; :} 
+        |  entero:num1 RESTA entero:num2 {: RESULT = (int)num1 - (int)num2; :};
+entero ::= entero:num1 MULTI entero:num2 {: RESULT = (int)num1 * (int)num2;:}
+        | entero:num1 DIVISN entero:num2 {: RESULT = (int)num1 / (int)num2;:};
+entero ::= PAROPN entero:num PARCLS {:RESULT = (int)num; :};
+
+
+graficar ::= GRAFICAR CIRCULO PAROPN ID:id COMA entero:posx COMA entero:posy COMA entero:radio COMA color:col PARCLS
+            {: graficos.graficarCirculo((int)posx, (int)posy, (int)radio, (Color)col); :}
+          | GRAFICAR CUADRADO PAROPN ID:id COMA entero:posx COMA entero:posy COMA entero:tam COMA color:col PARCLS
+            {: graficos.graficarCuadrado((int)posx, (int)posy, (int)tam, (Color)col);:}
+          | GRAFICAR RECTANGULO PAROPN ID:id COMA entero:posx COMA entero:posy COMA entero:ancho  COMA entero:alto COMA color:col PARCLS
+            {: graficos.graficarRectangulo((int)posx, (int)posy, (int)ancho, (int)alto, (Color)col ); :}
+          | GRAFICAR LINEA PAROPN ID:id COMA entero:x1 COMA entero:y1 COMA entero:x2 COMA entero:y2 COMA color:col PARCLS
+            {: graficos.graficarLinea((int)x1, (int)y1, (int)x2, (int)y2, (Color)col); :}
+          | GRAFICAR POLIGONO PAROPN ID:id COMA entero:posx COMA entero:posy COMA entero:cant COMA entero:ancho COMA entero:alto COMA color:col PARCLS
+            {: graficos.graficarPoligono((int) posx, (int)posy, (int)cant, (int)ancho, (int)alto, (Color)col); :};
+
+animar ::= ANIMAR OBJETO ANTERIOR PAROPN LINEA COMA entero COMA entero COMA entero PARCLS
+        |  ANIMAR OBJETO ANTERIOR PAROPN CURVA COMA entero COMA entero COMA entero PARCLS;
+
+
